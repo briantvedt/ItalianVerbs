@@ -1,20 +1,9 @@
 structure TestCases =
 struct
 
-  fun runAll () = let
-    val strm = TextIO.openIn "testcases";
-    fun run_lines strm =
-      case TextIO.inputLine strm of
-        SOME txt => ( print txt; run_lines strm )
-        | _ => ()
-  in
-    run_lines strm;
-    TextIO.closeIn strm
-  end
+  exception Parse
 
   datatype Group = NonFinite|Present|Imperfect|PastDef|Future|Cond
-
-  exception Parse
 
   fun groupFromString string = case string
     of "non_finite" => NonFinite
@@ -30,5 +19,16 @@ struct
     group: Group,
     forms: string list
   }
-end
 
+  fun runAll () = let
+    val strm = TextIO.openIn "testcases";
+    fun run_lines strm =
+      case TextIO.inputLine strm of
+        SOME txt => ( print txt; run_lines strm )
+        | _ => ()
+  in
+    run_lines strm;
+    TextIO.closeIn strm
+  end
+
+end
