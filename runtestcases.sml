@@ -20,7 +20,8 @@ struct
     forms: string list
   }
 
-  fun parseTestCase txt = String.substring(txt, 0, 6)
+  fun parseTestCase txt =
+    String.fields (fn c => (c = #":")) txt
 
   fun readTestCase strm =
     case TextIO.inputLine strm
