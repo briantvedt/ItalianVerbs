@@ -20,6 +20,13 @@ struct
     forms: string list
   }
 
+  fun parseTestCase txt = String.substring(txt, 0, 6)
+
+  fun readTestCase strm =
+    case TextIO.inputLine strm
+      of SOME txt => SOME (parseTestCase txt)
+       | NONE => NONE 
+
   fun runAll () = let
     val strm = TextIO.openIn "testcases";
     fun run_lines strm =

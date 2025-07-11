@@ -1,6 +1,7 @@
 Group
 is
+project.sml
 conjugate.sml
 runtestcases.sml
 $/basis.cm
-
+$smlnj/cm.cm
