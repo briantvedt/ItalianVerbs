@@ -40,7 +40,7 @@ struct
       val (infinitive, group) = parseHeader (hd fields)
       val forms = parseForms (hd (tl fields))
     in
-      infinitive :: forms
+      {infinitive=infinitive, group=group, forms=forms}:testcase
     end
       
   fun readTestCase strm =
