@@ -48,11 +48,14 @@ struct
       of SOME txt => SOME (parseTestCase txt)
        | NONE => NONE 
 
+  fun verify ({infinitive, group, forms}:testcase) =
+    print (infinitive ^ " verified\n")
+
   fun runAll () = let
     val strm = TextIO.openIn "testcases";
     fun run_lines strm =
       case TextIO.inputLine strm of
-        SOME txt => ( print txt; run_lines strm )
+        SOME txt => ( verify (parseTestCase txt); run_lines strm )
         | _ => ()
   in
     run_lines strm;

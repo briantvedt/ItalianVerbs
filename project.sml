@@ -3,6 +3,6 @@ struct
 
   fun make() = CM.make("project.cm");
 
-  fun run() = TestCases.parseTestCase "abc/def:here";
+  fun run() = TestCases.runAll();
 
 end
