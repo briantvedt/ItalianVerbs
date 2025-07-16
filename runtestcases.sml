@@ -39,7 +39,7 @@ struct
     let
       val words = String.fields (fn c => (c = #",")) formtxt
     in
-      List.map (String.translate (fn c => if (c = #" ") then "" else (str c))) words
+      List.map (String.translate (fn c => if (c = #" " orelse c = #"\n") then "" else (str c))) words
     end
 
   fun parseTestCase txt =
