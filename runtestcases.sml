@@ -5,6 +5,14 @@ struct
 
   datatype Group = NonFinite|Present|Imperfect|PastDef|Future|Cond
 
+  val subject_classes = [
+        (Conjugate.First, Conjugate.Singular),
+        (Conjugate.Second, Conjugate.Singular),
+        (Conjugate.Third, Conjugate.Singular),
+        (Conjugate.First, Conjugate.Plural),
+        (Conjugate.Second, Conjugate.Plural),
+        (Conjugate.Third, Conjugate.Plural)]
+
   type testcase = {
     infinitive: string,
     group: Group,
@@ -49,7 +57,20 @@ struct
        | NONE => NONE 
 
   fun verify ({infinitive, group, forms}:testcase) =
-    print (infinitive ^ " verified\n")
+    let
+      val actual = case group
+        of NonFinite => [Conjugate.gerund infinitive, Conjugate.present_participle infinitive,
+                         Conjugate.past_participle infinitive]
+         | Present => map (Conjugate.present_indicative infinitive) subject_classes
+         | Imperfect => map (Conjugate.imperfect infinitive) subject_classes
+         | PastDef => map (Conjugate.past_definite infinitive) subject_classes
+         | Future => map (Conjugate.future infinitive) subject_classes
+         | Cond => map (Conjugate.conditional infinitive) subject_classes
+    in
+      app (fn (x, y) => print (x ^ " " ^ y ^ "\n"))
+        (List.mapPartial (fn (x:string, y:string) => if (x = y) then NONE else SOME (x, y))
+          (ListPair.zipEq (actual, forms)))
+    end
 
   fun runAll () = let
     val strm = TextIO.openIn "testcases";
