@@ -20,6 +20,15 @@ struct
 
   exception BadInfinitive
 
+  (* TODO: replace these with the correct unicode values *)
+  structure Letter =
+  struct
+    val a_grave = "a`"
+    val e_acute = "e'"
+    val i_grave = "i`"
+    val o_grave = "o`"
+  end
+
   datatype category = Are | Ere | Ire
 
   fun categorize infinitive = (
@@ -46,7 +55,7 @@ struct
 
   fun past_participle infinitive =
     let val (stem, cat) = (decompose infinitive) in
-      stem ^ (case cat of Are => "a" | _ => "e") ^ "to"
+      stem ^ (case cat of Are => "a" | Ere => "u" | Ire => "i") ^ "to"
     end
 
   fun present_indicative infinitive (person, number) =
@@ -54,7 +63,7 @@ struct
       case (person, number)
         of (First, Singular) => stem ^ "o"
          | (Second, Singular) => stem ^ "i"
-         | (Third, Singular) => stem ^ "e"
+         | (Third, Singular) => stem ^ (case cat of Are => "a" | _ => "e")
          | (First, Plural) => stem ^ "iamo"
          | (Second, Plural) => stem ^ "ate"
          | (Third, Plural) => stem ^ "ano"
@@ -62,17 +71,43 @@ struct
 
   fun imperfect infinitive (person, number) =
     let val (stem, cat) = (decompose infinitive) in
-      stem ^ (case cat of Are => "a" | _ => "e") ^ "nte"
+      let val stemyv = stem ^ (case cat of Are => "a" | Ere => "e" | Ire => "i") ^ "v" in
+        case (person, number)
+          of (First, Singular) => stemyv ^ "o"
+           | (Second, Singular) => stemyv ^ "i"
+           | (Third, Singular) => stemyv ^ "a"
+           | (First, Plural) => stemyv ^ "amo"
+           | (Second, Plural) => stemyv ^ "ate"
+           | (Third, Plural) => stemyv ^ "ano"
+      end
     end
 
   fun past_definite infinitive (person, number) =
-    let val (stem, cat) = (decompose infinitive) in
-      stem ^ (case cat of Are => "a" | _ => "e") ^ "nte"
+    let
+      val (stem, cat) = (decompose infinitive)
+      val stemy = stem ^ (case cat of Are => "a" | Ere => "e" | Ire => "i")
+    in
+      case (person, number)
+        of (First, Singular) => stemy ^ "i"
+         | (Second, Singular) => stemy ^ "sti"
+         | (Third, Singular) => stem ^ "<twist>"
+         | (First, Plural) => stemy ^ "mmo"
+         | (Second, Plural) => stemy ^ "ste"
+         | (Third, Plural) => stemy ^ "rano"
     end
 
   fun future infinitive (person, number) =
-    let val (stem, cat) = (decompose infinitive) in
-      stem ^ (case cat of Are => "a" | _ => "e") ^ "nte"
+    let
+      val (stem, cat) = (decompose infinitive)
+      val stemyr = stem ^ (case cat of Ire => "i" | _ => "e") ^ "r"
+    in
+      case (person, number)
+        of (First, Singular) => stemyr ^ Letter.o_grave
+         | (Second, Singular) => stemyr ^ "ai"
+         | (Third, Singular) => stemyr ^ Letter.a_grave
+         | (First, Plural) => stemyr ^ "emo"
+         | (Second, Plural) => stemyr ^ "ete"
+         | (Third, Plural) => stemyr ^ "anno"
     end
 
   fun conditional infinitive (person, number) =
