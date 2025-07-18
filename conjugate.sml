@@ -20,13 +20,12 @@ struct
 
   exception BadInfinitive
 
-  (* TODO: replace these with the correct unicode values *)
   structure Letter =
   struct
-    val a_grave = "a`"
-    val e_acute = "e'"
-    val i_grave = "i`"
-    val o_grave = "o`"
+    val a_grave = "\195\160"
+    val e_acute = "\195\169"
+    val i_grave = "\195\172"
+    val o_grave = "\195\178"
   end
 
   datatype category = Are | Ere | Ire
