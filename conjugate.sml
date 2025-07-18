@@ -65,13 +65,15 @@ struct
          | (Second, Singular) => stem ^ "i"
          | (Third, Singular) => stem ^ (case cat of Are => "a" | _ => "e")
          | (First, Plural) => stem ^ "iamo"
-         | (Second, Plural) => stem ^ "ate"
-         | (Third, Plural) => stem ^ "ano"
+         | (Second, Plural) => stem ^ (case cat of Are => "a" | Ere => "e" | Ire => "i") ^ "te"
+         | (Third, Plural) => stem ^ (case cat of Are => "a" | _ => "o") ^ "no"
     end
 
   fun imperfect infinitive (person, number) =
-    let val (stem, cat) = (decompose infinitive) in
-      let val stemyv = stem ^ (case cat of Are => "a" | Ere => "e" | Ire => "i") ^ "v" in
+    let
+      val (stem, cat) = (decompose infinitive)
+      val stemyv = stem ^ (case cat of Are => "a" | Ere => "e" | Ire => "i") ^ "v"
+    in
         case (person, number)
           of (First, Singular) => stemyv ^ "o"
            | (Second, Singular) => stemyv ^ "i"
@@ -79,7 +81,6 @@ struct
            | (First, Plural) => stemyv ^ "amo"
            | (Second, Plural) => stemyv ^ "ate"
            | (Third, Plural) => stemyv ^ "ano"
-      end
     end
 
   fun past_definite infinitive (person, number) =
@@ -90,7 +91,8 @@ struct
       case (person, number)
         of (First, Singular) => stemy ^ "i"
          | (Second, Singular) => stemy ^ "sti"
-         | (Third, Singular) => stem ^ "<twist>"
+         | (Third, Singular) => stem ^ (case cat of
+                  Are => Letter.o_grave | Ere => Letter.e_acute | Ire => Letter.i_grave)
          | (First, Plural) => stemy ^ "mmo"
          | (Second, Plural) => stemy ^ "ste"
          | (Third, Plural) => stemy ^ "rano"
@@ -111,8 +113,17 @@ struct
     end
 
   fun conditional infinitive (person, number) =
-    let val (stem, cat) = (decompose infinitive) in
-      stem ^ (case cat of Are => "a" | _ => "e") ^ "nte"
+    let
+      val (stem, cat) = (decompose infinitive)
+      val stemyr = stem ^ (case cat of Ire => "i" | _ => "e") ^ "r"
+    in
+      case (person, number)
+        of (First, Singular) => stemyr ^ "ei"
+         | (Second, Singular) => stemyr ^ "esti"
+         | (Third, Singular) => stemyr ^ "ebbe"
+         | (First, Plural) => stemyr ^ "emmo"
+         | (Second, Plural) => stemyr ^ "este"
+         | (Third, Plural) => stemyr ^ "ebbero"
     end
 end
 
