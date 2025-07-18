@@ -39,12 +39,45 @@ struct
       stem ^ (case cat of Are => "a" | _ => "e") ^ "ndo"
     end
 
-  fun present_participle infinitive = ""
-  fun past_participle infinitive = ""
-  fun present_indicative infinitive (person, number) = ""
-  fun imperfect infinitive (person, number) = ""
-  fun past_definite infinitive (person, number) = ""
-  fun future infinitive (person, number) = ""
-  fun conditional infinitive (person, number) = ""
+  fun present_participle infinitive =
+    let val (stem, cat) = (decompose infinitive) in
+      stem ^ (case cat of Are => "a" | _ => "e") ^ "nte"
+    end
+
+  fun past_participle infinitive =
+    let val (stem, cat) = (decompose infinitive) in
+      stem ^ (case cat of Are => "a" | _ => "e") ^ "to"
+    end
+
+  fun present_indicative infinitive (person, number) =
+    let val (stem, cat) = (decompose infinitive) in
+      case (person, number)
+        of (First, Singular) => stem ^ "o"
+         | (Second, Singular) => stem ^ "i"
+         | (Third, Singular) => stem ^ "e"
+         | (First, Plural) => stem ^ "iamo"
+         | (Second, Plural) => stem ^ "ate"
+         | (Third, Plural) => stem ^ "ano"
+    end
+
+  fun imperfect infinitive (person, number) =
+    let val (stem, cat) = (decompose infinitive) in
+      stem ^ (case cat of Are => "a" | _ => "e") ^ "nte"
+    end
+
+  fun past_definite infinitive (person, number) =
+    let val (stem, cat) = (decompose infinitive) in
+      stem ^ (case cat of Are => "a" | _ => "e") ^ "nte"
+    end
+
+  fun future infinitive (person, number) =
+    let val (stem, cat) = (decompose infinitive) in
+      stem ^ (case cat of Are => "a" | _ => "e") ^ "nte"
+    end
+
+  fun conditional infinitive (person, number) =
+    let val (stem, cat) = (decompose infinitive) in
+      stem ^ (case cat of Are => "a" | _ => "e") ^ "nte"
+    end
 end
 
