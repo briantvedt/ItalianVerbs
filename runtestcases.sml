@@ -5,13 +5,12 @@ struct
 
   datatype Group = NonFinite|Present|Imperfect|PastDef|Future|Cond
 
+  structure C = Conjugate
+
   val subject_classes = [
-        (Conjugate.First, Conjugate.Singular),
-        (Conjugate.Second, Conjugate.Singular),
-        (Conjugate.Third, Conjugate.Singular),
-        (Conjugate.First, Conjugate.Plural),
-        (Conjugate.Second, Conjugate.Plural),
-        (Conjugate.Third, Conjugate.Plural)]
+        (C.First, C.Singular), (C.Second, C.Singular), (C.Third, C.Singular),
+        (C.First, C.Plural), (C.Second, C.Plural), (C.Third, C.Plural)
+      ]
 
   type testcase = {
     infinitive: string,
@@ -39,7 +38,8 @@ struct
     let
       val words = String.fields (fn c => (c = #",")) formtxt
     in
-      List.map (String.translate (fn c => if (c = #" " orelse c = #"\n") then "" else (str c))) words
+      List.map (String.translate
+                 (fn c => if (c = #" " orelse c = #"\n") then "" else (str c))) words
     end
 
   fun parseTestCase txt =
@@ -59,13 +59,13 @@ struct
   fun verify ({infinitive, group, forms}:testcase) =
     let
       val actual = case group
-        of NonFinite => [Conjugate.gerund infinitive, Conjugate.present_participle infinitive,
-                         Conjugate.past_participle infinitive]
-         | Present => map (Conjugate.present_indicative infinitive) subject_classes
-         | Imperfect => map (Conjugate.imperfect infinitive) subject_classes
-         | PastDef => map (Conjugate.past_definite infinitive) subject_classes
-         | Future => map (Conjugate.future infinitive) subject_classes
-         | Cond => map (Conjugate.conditional infinitive) subject_classes
+        of NonFinite => [C.gerund infinitive, C.present_participle infinitive,
+                         C.past_participle infinitive]
+         | Present => map (C.present_indicative infinitive) subject_classes
+         | Imperfect => map (C.imperfect infinitive) subject_classes
+         | PastDef => map (C.past_definite infinitive) subject_classes
+         | Future => map (C.future infinitive) subject_classes
+         | Cond => map (C.conditional infinitive) subject_classes
     in
       app (fn (x, y) => print (x ^ " " ^ y ^ "\n"))
         (List.mapPartial (fn (x:string, y:string) => if (x = y) then NONE else SOME (x, y))
