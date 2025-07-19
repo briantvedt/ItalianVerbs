@@ -3,5 +3,6 @@ is
 project.sml
 conjugate.sml
 runtestcases.sml
+jsonstore.sml
 $/basis.cm
 $smlnj/cm.cm
