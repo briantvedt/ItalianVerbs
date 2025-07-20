@@ -4,6 +4,7 @@ struct
   exception Store
 
   structure P = OS.Path
+  structure U = JSONUtil
 
   fun get_location () =
     case OS.Process.getEnv "IT_JSON_STORE"
@@ -25,7 +26,8 @@ struct
   fun parse_entry infinitive =
     let
       val file = JSONParser.openFile (get_entry_path infinitive)
-      val obj = JSONParser.parse file
+      val root = JSONParser.parse file
+      val obj = U.get (root, [U.SEL "conjugations"])
     in
       JSONParser.close file;
       obj
