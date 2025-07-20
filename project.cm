@@ -6,3 +6,4 @@ runtestcases.sml
 jsonstore.sml
 $/basis.cm
 $smlnj/cm.cm
+$/json-lib.cm

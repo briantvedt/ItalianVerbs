@@ -22,6 +22,15 @@ struct
       }
     }
 
+  fun parse_entry infinitive =
+    let
+      val file = JSONParser.openFile (get_entry_path infinitive)
+      val obj = JSONParser.parse file
+    in
+      JSONParser.close file;
+      obj
+    end
+
   (* TODO: function to build 'testcases' from infinitives in 'target' *)
 
 end
