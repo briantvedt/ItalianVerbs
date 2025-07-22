@@ -34,11 +34,11 @@ struct
       val root = JSONParser.parse file
       val objv = U.asArray (U.get (root, [U.SEL "conjugations"]))
       fun loop i result =
-        (* TODO: verify montonicity of element sorts *)
         if i = Vector.length objv then result else
           let
             val curr_group = if null result then "" else #group (hd result)
             val curr_group_sort = if null result then ~1 else #sort (hd result)
+            val curr_sort = if null result then ~1 else #sort (hd (#elements (hd result)))
             val obj = Vector.sub(objv, i)
             val group = U.asString (U.get (obj, [U.SEL "group"]))
             val group_sort = U.asInt (U.get (obj, [U.SEL "group_sort"]))
@@ -51,9 +51,11 @@ struct
             val (curr_elements, link_result) =
               if group = curr_group then
                 (group_sort = curr_group_sort orelse raise Unexpected;
+                 (#sort element = curr_sort + 1 andalso #sort element <= 5) orelse raise Unexpected;
                   (#elements (hd result), tl result))
               else
                 (group_sort > curr_group_sort orelse raise Unexpected;
+                 #sort element = 0 orelse raise Unexpected;
                   ([], result))
           in
             loop (i+1) ({
