@@ -45,8 +45,7 @@ struct
             val element = {
                 value = U.asString (U.get (obj, [U.SEL "value"])),
                 sort = U.asInt (U.get (obj, [U.SEL "sort"])),
-                (* TODO: read form when present *)
-                form = NONE
+                form = if U.hasField "form" obj then SOME (U.asString (U.get (obj, [U.SEL "form"]))) else NONE
               }
             val (curr_elements, link_result) =
               if group = curr_group then
