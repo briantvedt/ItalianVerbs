@@ -67,6 +67,11 @@ struct
       loop 0 []
     end
 
+  fun parse_entry (infinitive) : (string * string list) list =
+    List.revMap
+      (fn grp => (#group grp, List.revMap (fn elt => #value elt) (#elements grp)))
+    (preparse_entry infinitive)
+
   (* TODO: function to build 'testcases' from infinitives in 'target' *)
 
 end
