@@ -3,7 +3,7 @@ struct
 
   exception Parse
 
-  datatype Group = NonFinite|Present|Imperfect|PastDef|Future|Cond
+  datatype Group = NonFinite|Present|Imperfect|PastDef|Future|Cond|Subj|SubjImperfect|Imperative
 
   structure C = Conjugate
 
