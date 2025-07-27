@@ -72,24 +72,43 @@ struct
       (fn grp => (#group grp, List.revMap (fn elt => #value elt) (#elements grp)))
     (preparse_entry infinitive)
 
-  fun write_testcase (strm, infinitive) =
+  fun write_testcase (strm, lemma) =
     let
-      val entry = parse_entry(infinitive)
+      val entry = parse_entry(lemma)
       fun write_line str = TextIO.outputSubstr(strm, Substring.full (str ^ "\n"))       
       val gerund = ref "";
       val prespart = ref "";
       val pastpart = ref "";
+      fun cleanup strings =
+        map (fn s =>
+                let val fs = String.fields (fn ch => ch = #",") s in
+                      List.nth(fs, 0) end
+            ) strings
       fun maybe_write_item item =
           case item
             of ("indicative/present", forms) =>
-                  write_line (infinitive ^ "/present:" ^ String.concatWith "," forms)
+                  write_line (lemma ^ "/present:" ^ String.concatWith "," forms)
+             | ("indicative/imperfect", forms) =>
+                  write_line (lemma ^ "/imperfect:" ^ String.concatWith "," forms)
+             | ("indicative/pasthistoric", forms) =>
+                  write_line (lemma ^ "/past_definite:" ^ String.concatWith "," forms)
+             | ("indicative/future", forms) =>
+                  write_line (lemma ^ "/future:" ^ String.concatWith "," forms)
+             | ("conditional/present", forms) =>
+                  write_line (lemma ^ "/conditional:" ^ String.concatWith "," forms)
+             | ("subjunctive/present", forms) =>
+                  write_line (lemma ^ "/subjunctive:" ^ String.concatWith "," forms)
+             | ("subjunctive/imperfect", forms) =>
+                  write_line (lemma ^ "/subjunctive_imperfect:" ^ String.concatWith "," forms)
+             | ("imperative", forms) =>
+                  write_line (lemma ^ "/imperative:" ^ String.concatWith "," (cleanup forms))
              | ("gerund", forms) => (gerund := List.nth(forms, 0))
              | ("pastparticiple", forms) => (pastpart := List.nth(forms, 0))
              | ("presentparticiple", forms) => (prespart := List.nth(forms, 0))
              | _ => ()
     in
       ( app maybe_write_item entry;
-        write_line (infinitive ^ "/non_finite:" ^ String.concatWith "," [!gerund, !prespart, !pastpart]) )
+        write_line (lemma ^ "/non_finite:" ^ String.concatWith "," [!gerund, !prespart, !pastpart]) )
     end
 
   fun generate_testcases() =
