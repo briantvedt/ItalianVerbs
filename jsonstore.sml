@@ -76,13 +76,20 @@ struct
     let
       val entry = parse_entry(infinitive)
       fun write_line str = TextIO.outputSubstr(strm, Substring.full (str ^ "\n"))       
+      val gerund = ref "";
+      val prespart = ref "";
+      val pastpart = ref "";
       fun maybe_write_item item =
           case item
             of ("indicative/present", forms) =>
                   write_line (infinitive ^ "/present:" ^ String.concatWith "," forms)
+             | ("gerund", forms) => (gerund := List.nth(forms, 0))
+             | ("pastparticiple", forms) => (pastpart := List.nth(forms, 0))
+             | ("presentparticiple", forms) => (prespart := List.nth(forms, 0))
              | _ => ()
     in
-      app maybe_write_item entry
+      ( app maybe_write_item entry;
+        write_line (infinitive ^ "/non_finite:" ^ String.concatWith "," [!gerund, !prespart, !pastpart]) )
     end
 
   fun generate_testcases() =
