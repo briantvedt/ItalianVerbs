@@ -72,6 +72,30 @@ struct
       (fn grp => (#group grp, List.revMap (fn elt => #value elt) (#elements grp)))
     (preparse_entry infinitive)
 
-  (* TODO: function to build 'testcases' from infinitives in 'target' *)
+  fun write_testcase (strm, infinitive) =
+    let
+      val entry = parse_entry(infinitive)
+      fun write_line str = TextIO.outputSubstr(strm, Substring.full (str ^ "\n"))       
+      fun maybe_write_item item =
+          case item
+            of ("indicative/present", forms) =>
+                  write_line (infinitive ^ "/present:" ^ String.concatWith "," forms)
+             | _ => ()
+    in
+      app maybe_write_item entry
+    end
+
+  fun generate_testcases() =
+    let
+      val strip = String.translate (fn ch => if Char.isSpace ch then "" else String.str ch);
+      (* TODO: write to 'testcases' file *)
+      val outputStrm = TextIO.stdOut;
+      fun loop strm =
+        case TextIO.inputLine strm
+          of SOME txt => (write_testcase (outputStrm, strip txt); loop strm)
+           | NONE => TextIO.closeIn strm (* TextIO.closeOut outputStrm *)
+    in
+      loop (TextIO.openIn "target")
+    end
 
 end
