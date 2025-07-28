@@ -94,7 +94,7 @@ struct
                   Are => Letter.o_grave | Ere => Letter.e_acute | Ire => Letter.i_grave)
          | (First, Plural) => stemy ^ "mmo"
          | (Second, Plural) => stemy ^ "ste"
-         | (Third, Plural) => stemy ^ "rano"
+         | (Third, Plural) => stemy ^ "rono"
     end
 
   fun future infinitive (person, number) =
