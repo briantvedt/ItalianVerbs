@@ -29,6 +29,9 @@ struct
          | "past_definite" => PastDef
          | "future" => Future
          | "conditional" => Cond
+         | "subjunctive" => Subj
+         | "subjunctive_imperfect" => SubjImperfect
+         | "imperative" => Imperative
          | _ => raise Parse
     in
       (infinitive, group)
@@ -66,6 +69,9 @@ struct
          | PastDef => map (C.past_definite infinitive) subject_classes
          | Future => map (C.future infinitive) subject_classes
          | Cond => map (C.conditional infinitive) subject_classes
+         | Subj => map (C.subjunctive infinitive) subject_classes
+         | SubjImperfect => map (C.subjunctive_imperfect infinitive) subject_classes
+         | Imperative => map (C.imperative infinitive) subject_classes
     in
       app (fn (x, y) => print (x ^ " " ^ y ^ "\n"))
         (List.mapPartial (fn (x:string, y:string) => if (x = y) then NONE else SOME (x, y))

@@ -11,6 +11,9 @@ sig
   val past_definite : string -> person * number -> string
   val future : string -> person * number -> string
   val conditional : string -> person * number -> string
+  val subjunctive : string -> person * number -> string
+  val subjunctive_imperfect : string -> person * number -> string
+  val imperative : string -> person * number -> string
 end
 
 structure Conjugate :> CONJUGATE =
@@ -124,5 +127,48 @@ struct
          | (Second, Plural) => stemyr ^ "este"
          | (Third, Plural) => stemyr ^ "ebbero"
     end
+
+    fun subjunctive infinitive (person, number) =
+      let
+        val (stem, cat) = decompose infinitive
+        val stemy = stem ^ (case cat of Are => "i" | _ => "a")
+      in
+        case (person, number)
+          of (First, Singular) => stemy
+           | (Second, Singular) => stemy
+           | (Third, Singular) => stemy
+           | (First, Plural) => stem ^ "iamo"
+           | (Second, Plural) => stem ^ "iate"
+           | (Third, Plural) => stemy ^ "no"
+      end
+
+    fun subjunctive_imperfect infinitive (person, number) =
+      let
+        val (stem, cat) = decompose infinitive
+        val stemy = stem ^ (case cat of Are => "a" | Ere => "e" | Ire => "i")
+      in
+        case (person, number)
+          of (First, Singular) => stemy ^ "ssi"
+           | (Second, Singular) => stemy ^ "ssi"
+           | (Third, Singular) => stemy ^ "sse"
+           | (First, Plural) => stemy ^ "ssemo"
+           | (Second, Plural) => stemy ^ "ste"
+           | (Third, Plural) => stemy ^ "ssero"
+      end
+
+    fun imperative infinitive (person, number) =
+      let
+        val (stem, cat) = decompose infinitive
+        val stemy = stem ^ (case cat of Are => "i" | _ => "a")
+      in
+        case (person, number)
+          of (First, Singular) => infinitive (* incorrect, actually does not exist *)
+           | (Second, Singular) => stem ^ (case cat of Are => "a" | _ => "i")
+           | (Third, Singular) => stemy
+           | (First, Plural) => stem ^ "iamo"
+           | (Second, Plural) => stemy ^ "te" (* wrong! *)
+           | (Third, Plural) => stemy ^ "no"
+      end
+
 end
 
