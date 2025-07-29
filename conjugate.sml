@@ -162,7 +162,7 @@ struct
         val stemy = stem ^ (case cat of Are => "i" | _ => "a")
       in
         case (person, number)
-          of (First, Singular) => infinitive (* incorrect, actually does not exist *)
+          of (First, Singular) => "" (* incorrect, actually does not exist *)
            | (Second, Singular) => stem ^ (case cat of Are => "a" | _ => "i")
            | (Third, Singular) => stemy
            | (First, Plural) => stem ^ "iamo"
