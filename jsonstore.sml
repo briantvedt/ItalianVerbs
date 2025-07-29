@@ -72,6 +72,26 @@ struct
       (fn grp => (#group grp, List.revMap (fn elt => #value elt) (#elements grp)))
     (preparse_entry infinitive)
 
+  (* This is a device for dealing with multi-valued cases, that happens to
+     work for now, but a better approach is needed. *)
+  fun refine formstrList =
+    let
+      fun fix1 formstr =
+        let
+          val lst = String.tokens (fn ch => (ch = #"," orelse ch = #" ")) formstr
+          fun loop strings candidate =
+            if null strings then candidate else
+              if candidate = "" orelse String.size (hd strings) < String.size candidate then
+                loop (tl strings) (hd strings)
+              else
+                loop (tl strings) candidate
+        in
+          loop lst ""
+        end
+    in
+      map fix1 formstrList
+    end
+
   fun write_testcase (strm, lemma) =
     let
       val entry = parse_entry(lemma)
@@ -91,7 +111,7 @@ struct
              | ("indicative/imperfect", forms) =>
                   write_line (lemma ^ "/imperfect: " ^ String.concatWith ", " forms)
              | ("indicative/pasthistoric", forms) =>
-                  write_line (lemma ^ "/past_definite: " ^ String.concatWith ", " (cleanup forms))
+                  write_line (lemma ^ "/past_definite: " ^ String.concatWith ", " (refine forms))
              | ("indicative/future", forms) =>
                   write_line (lemma ^ "/future: " ^ String.concatWith ", " forms)
              | ("conditional/present", forms) =>
