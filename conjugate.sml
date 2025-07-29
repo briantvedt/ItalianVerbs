@@ -151,7 +151,7 @@ struct
           of (First, Singular) => stemy ^ "ssi"
            | (Second, Singular) => stemy ^ "ssi"
            | (Third, Singular) => stemy ^ "sse"
-           | (First, Plural) => stemy ^ "ssemo"
+           | (First, Plural) => stemy ^ "ssimo"
            | (Second, Plural) => stemy ^ "ste"
            | (Third, Plural) => stemy ^ "ssero"
       end
