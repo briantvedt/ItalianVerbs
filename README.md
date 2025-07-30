@@ -16,6 +16,14 @@ language learner.
 The core is written in Standard ML. The test harness makes use of the SML/NJ
 Library.
 
+# Test harness
+
+There is a test harness, which uses the [JSON database](https://github.com/ian-hamlin/verb-data)
+published by @ian-hamlin to generate test cases.
+
+I also plan to generate test cases using the [GLAFF-IT](http://redac.univ-tlse2.fr/lexiques/glaffit.html)
+database.
+
 # Limitations
 
 This project is still in its earliest stage, and currently only regular verbs,
