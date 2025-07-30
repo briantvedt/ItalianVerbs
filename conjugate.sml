@@ -166,7 +166,7 @@ struct
            | (Second, Singular) => stem ^ (case cat of Are => "a" | _ => "i")
            | (Third, Singular) => stemy
            | (First, Plural) => stem ^ "iamo"
-           | (Second, Plural) => stemy ^ "te" (* wrong! *)
+           | (Second, Plural) => stem ^ (case cat of Are => "a" | Ere => "e" | Ire => "i") ^ "te"
            | (Third, Plural) => stemy ^ "no"
       end
 
