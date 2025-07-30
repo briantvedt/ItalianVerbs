@@ -26,5 +26,5 @@ database.
 
 # Limitations
 
-This project is still in its earliest stage, and currently only regular verbs,
-and only some of their tenses, are supported.
+This project is still in its earliest stage, and currently only regular verbs
+are supported.
